@@ -373,3 +373,8 @@ class UPS2Control():
             voltage=float(battery_voltage) / 1000,
             current=float(battery_current) / 1000,
             soc=battery_soc))
+
+
+if __name__ == "__main__":
+    ups = UPS2Control(8000)
+    ups.print_basic_info()
