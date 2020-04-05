@@ -403,32 +403,34 @@ class UPS2Control():
         print("True Remaining Capacity:        {} mAh".format(all_infos['status_truerem_capacity']))
 
     def log_all_info(self, filename = 'ups2_log.txt'):
-        with open(filename, 'a+') as f:
-            all_info = self.get_all_info()
-            now_time = datetime.datetime.now()
-            time_str = datetime.datetime.strftime(now_time, '%Y-%m-%d %H:%M:%S')
+        all_info = self.get_all_info()
+        now_time = datetime.datetime.now()
+        time_str = datetime.datetime.strftime(now_time, '%Y-%m-%d %H:%M:%S')
 
-            f.write(time_str + ',' + \
-                    str(all_info['status_control']) + ',' + \
-                    str(all_info['status_temp']) + ',' + \
-                    str(all_info['status_voltage']) + ',' + \
-                    str(all_info['status_nom_capacity']) + ',' + \
-                    str(all_info['status_avail_capacity']) + ',' + \
-                    str(all_info['status_rem_capacity']) + ',' + \
-                    str(all_info['status_full_capacity']) + ',' + \
-                    str(all_info['status_avg_current']) + ',' + \
-                    str(all_info['status_stdby_current']) + ',' + \
-                    str(all_info['status_max_current']) + ',' + \
-                    str(all_info['status_avg_power']) + ',' + \
-                    str(all_info['status_soc']) + ',' + \
-                    str(all_info['status_int_temp']) + ',' + \
-                    str(all_info['status_soh']) + ',' + \
-                    str(all_info['status_rem_cap_unfil']) + ',' + \
-                    str(all_info['status_rem_cap_fil']) + ',' + \
-                    str(all_info['status_full_cap_unfil']) + ',' + \
-                    str(all_info['status_full_cap_fil']) + ',' + \
-                    str(all_info['status_soc_unfl']) + ',' + \
-                    str(all_info['status_truerem_capacity']) + '\n')
+        data = time_str + ',' + \
+                str(all_info['status_control']) + ',' + \
+                str(all_info['status_temp']) + ',' + \
+                str(all_info['status_voltage']) + ',' + \
+                str(all_info['status_nom_capacity']) + ',' + \
+                str(all_info['status_avail_capacity']) + ',' + \
+                str(all_info['status_rem_capacity']) + ',' + \
+                str(all_info['status_full_capacity']) + ',' + \
+                str(all_info['status_avg_current']) + ',' + \
+                str(all_info['status_stdby_current']) + ',' + \
+                str(all_info['status_max_current']) + ',' + \
+                str(all_info['status_avg_power']) + ',' + \
+                str(all_info['status_soc']) + ',' + \
+                str(all_info['status_int_temp']) + ',' + \
+                str(all_info['status_soh']) + ',' + \
+                str(all_info['status_rem_cap_unfil']) + ',' + \
+                str(all_info['status_rem_cap_fil']) + ',' + \
+                str(all_info['status_full_cap_unfil']) + ',' + \
+                str(all_info['status_full_cap_fil']) + ',' + \
+                str(all_info['status_soc_unfl']) + ',' + \
+                str(all_info['status_truerem_capacity']) + '\n'
+        print(data)
+        with open(filename, 'a+') as f:
+            f.write(data)
             
 
 if __name__ == "__main__":
