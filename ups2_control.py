@@ -175,6 +175,8 @@ class UPS2Control():
     # Change 2500 to your battery capacity (mAh)
         self.MY_BATTERY_CAP = battery_cap
         self.bus=smbus.SMBus(1)
+        time.sleep(1)
+        self.writeCap(MY_BATTERY_CAP)
 
     def readControlWord(self, cmd):
         self.bus.write_word_data(BQ27441_I2C_ADDRESS, 0x00, cmd)
