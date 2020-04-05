@@ -310,7 +310,7 @@ class UPS2Control():
         return new_val[0]
 
     def soh(self):
-        val = get_status_u(BQ27441_COMMAND_SOH)
+        val = self.get_status_u(BQ27441_COMMAND_SOH)
         return val & 0x00FF
 
     def get_status_u(self,reg):
@@ -378,3 +378,7 @@ class UPS2Control():
 if __name__ == "__main__":
     ups = UPS2Control(8000)
     ups.print_basic_info()
+    all_infos = ups.get_all_info()
+    for k,v in  all_infos.items():
+        print(k, v)
+
