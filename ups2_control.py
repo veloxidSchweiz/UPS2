@@ -176,7 +176,7 @@ class UPS2Control():
         self.MY_BATTERY_CAP = battery_cap
         self.bus=smbus.SMBus(1)
         time.sleep(1)
-        self.writeCap(MY_BATTERY_CAP)
+        self.writeCap(self.MY_BATTERY_CAP)
 
     def readControlWord(self, cmd):
         self.bus.write_word_data(BQ27441_I2C_ADDRESS, 0x00, cmd)
@@ -286,10 +286,10 @@ class UPS2Control():
 
         time.sleep(1)
 
-        softReset()
-        exitConfigUpdate()
+        self.softReset()
+        self.exitConfigUpdate()
 
-        seal()
+        self.seal()
 
     def availCap(self):
         val = self.bus.read_i2c_block_data(BQ27441_I2C_ADDRESS, BQ27441_COMMAND_AVAIL_CAPACITY, 2)
@@ -376,10 +376,33 @@ class UPS2Control():
             current=float(battery_current) / 1000,
             soc=battery_soc))
 
+    def print_all_info(self):
+        all_infos = self.get_all_info()
+        print("Control:                        {}".format(all_infos['status_control']))
+        print("Temperature:                    {} K".format(all_infos['status_temp']/10.))
+        print("Voltage:                        {} mV".format(all_infos['status_voltage']))
+        print("Nominal Available Capacity:     {} mAh".format(all_infos['status_nom_capacity']))
+        print("Full Available Capacity:        {} mAh".format(all_infos['status_avail_capacity']))
+        print("Remaining Capacity:             {} mAh".format(all_infos['status_rem_capacity']))
+        print("Full Charge Capacity:           {} mAh".format(all_infos['status_full_capacity']))
+        print("Average Current:                {} mA".format(all_infos['status_avg_current']))
+        print("Standby Current:                {} mA".format(all_infos['status_stdby_current']))
+        print("MaxLoad Current:                {} mA".format(all_infos['status_max_current']))
+        print("Average Power:                  {} mW".format(all_infos['status_avg_power']))
+        print("State Of Charge:                {} %".format(all_infos['status_soc']))
+        print("Internal Temperature:           {} K".format(all_infos['status_int_temp'] /10.))
+        print("State Of Health:                {} %".format(all_infos['status_soh']))
+        print("Remaining Capacity Unfiltered:  {} mAh".format(all_infos['status_rem_cap_unfil']))
+        print("Remaining Capacity Filtered:    {} mAh".format(all_infos['status_rem_cap_fil']))
+        print("Full Charge Capacity Unfiltered:{} mAh".format(all_infos['status_full_cap_unfil']))
+        print("Full Charge Capacity Filtered:  {} mAh".format(all_infos['status_full_cap_fil']))
+        print("State Of Charge Unfiltered:     {} %".format(all_infos['status_soc_unfl']))
+        print("True Remaining Capacity:        {} mAh".format(all_infos['status_truerem_capacity']))
 
 if __name__ == "__main__":
     ups = UPS2Control(8000)
     ups.print_basic_info()
+    ups.print_all_info()
     all_infos = ups.get_all_info()
     for k,v in  all_infos.items():
         print(k, v)
