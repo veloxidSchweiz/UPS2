@@ -362,6 +362,9 @@ class UPS2Control():
         return basic_info
 
     def print_basic_info(self):
+        print(self.get_basic_info_string)
+
+    def get_basic_info_string(self):
         # print "[Basic Info]"
         # print "1.Voltage:", float(battery_voltage) / 1000, "V"
         # print "2.SOC:    ", battery_soc , "%"
