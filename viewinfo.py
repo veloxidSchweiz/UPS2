@@ -5,10 +5,12 @@
 import smbus 
 import time 
 import struct 
-#import logging
+import logging
 import datetime
+logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
+logger = logging.getLogger(__name__)
 #Change 2500 to your battery capacity (mAh)
-MY_BATTERY_CAP = 2500
+MY_BATTERY_CAP = 8000
 #
 # General Constants 常量
 #
@@ -344,26 +346,26 @@ def get_all_info():
 	status_truerem_capacity = get_status_u(BQ27441_COMMAND_TRUEREM_CAPACITY)
 
 def print_all_info():
-	print "Control:                        ", status_control
-	print "Temperature:                    ", status_temp, "0.1K"
-	print "Voltage:                        ", status_voltage, "mV"
-	print "Nominal Available Capacity:     ", status_nom_capacity, "mAh"
-	print "Full Available Capacity:        ", status_avail_capacity, "mAh"
-	print "Remaining Capacity:             ", status_rem_capacity, "mAh"
-	print "Full Charge Capacity:           ", status_full_capacity, "mAh"
-	print "Average Current:                ", status_avg_current, "mA"
-	print "Standby Current:                ", status_stdby_current, "mA"
-	print "MaxLoad Current:                ", status_max_current, "mA"
-	print "Average Power:                  ", status_avg_power, "mW"
-	print "State Of Charge:                ", status_soc, "%"
-	print "Internal Temperature:           ", status_int_temp, "0.1K"
-	print "State Of Health:                ", status_soh, "%"
-	print "Remaining Capacity Unfiltered:  ", status_rem_cap_unfil, "mAh"
-	print "Remaining Capacity Filtered:    ", status_rem_cap_fil, "mAh"
-	print "Full Charge Capacity Unfiltered:", status_full_cap_unfil, "mAh"
-	print "Full Charge Capacity Filtered:  ", status_full_cap_fil, "mAh"
-	print "State Of Charge Unfiltered:     ", status_soc_unfl, "%"
-	print "True Remaining Capacity:        ", status_truerem_capacity, "mAh"
+	logger.info("Control:                        {} ".format( status_control))
+	logger.info("Temperature:                    {} 0.1K".format( status_temp))
+	logger.info("Voltage:                        {} mV".format(status_voltage))
+	logger.info("Nominal Available Capacity:     {} mAh".format(status_nom_capacity))
+	logger.info("Full Available Capacity:        {} mAh".format(status_avail_capacity))
+	logger.info("Remaining Capacity:             {} mAh".format(status_rem_capacity))
+	logger.info("Full Charge Capacity:           {} mAh".format(status_full_capacity))
+	logger.info("Average Current:                {} mA".format(status_avg_current))
+	logger.info("Standby Current:                {} mA".format(status_stdby_current))
+	logger.info("MaxLoad Current:                {} mA".format(status_max_current))
+	logger.info("Average Power:                  {} mW".format(status_avg_power))
+	logger.info("State Of Charge:                {} %".format(status_soc))
+	logger.info("Internal Temperature:           {} 0.1K".format(status_int_temp))
+	logger.info("State Of Health:                {} %".format(status_soh))
+	logger.info("Remaining Capacity Unfiltered:  {} mAh".format(status_rem_cap_unfil))
+	logger.info("Remaining Capacity Filtered:    {} mAh".format(status_rem_cap_fil))
+	logger.info("Full Charge Capacity Unfiltered:{} mAh".format(status_full_cap_unfil))
+	logger.info("Full Charge Capacity Filtered:  {} mAh".format(status_full_cap_fil))
+	logger.info("State Of Charge Unfiltered:     {} %".format(status_soc_unfl))
+	logger.info("True Remaining Capacity:        {} mAh".format(status_truerem_capacity))
 
 def get_basic_info():
 	global battery_soc, battery_voltage, battery_current ,battery_soh
@@ -378,9 +380,10 @@ def print_basic_info():
 	# print "2.SOC:    ", battery_soc , "%"
 	# print "3.Current:", float(battery_current) / 1000 , "A"
 	# print "4.SOH:    ", battery_soh, "%"
-	print "Voltage:", float(battery_voltage) / 1000, "V - " \
-		"Current:", float(battery_current) / 1000 , "A - " , \
-		"SOC:", battery_soc , "%"
+    logger.info("Voltage: {:.2f} V - Current: {:.2f} A - SOC: {:.2f} %".format(
+        float(battery_voltage) / 1000,
+		float(battery_current) / 1000 ,
+		battery_soc))
 	
 
 def log_all_info():
@@ -401,13 +404,12 @@ def print_status():
 	for dictElement in dict_flag:
 	#print dict_flag[dictElement]
 		if (dict_flag[dictElement] & status) is not 0:
-			print dictElement
+			print(dictElement)
 
 bus=smbus.SMBus(1)
 time.sleep(1)
 writeCap(MY_BATTERY_CAP)
 #print "Now loading..."
-#get_all_info()
-get_basic_info()
-print_basic_info()
-
+get_all_info()
+print_all_info()
+#get_basic_info()
